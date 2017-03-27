@@ -26,15 +26,19 @@ def getTLE(satID):
         print("Login failed")
         return str(resp1.status_code)
 
-    resp = requests.get('https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/'
-                        +satID+"/EPOCH/"+dstr+"--"+d1str, cookies=resp1.cookies)
 ##    resp = requests.get('https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/'
-##                        +satID+"/predicates/TLE_LINE0,TLE_LINE1,TLE_LINE2", cookies=resp1.cookies)
+##                        +satID+"/EPOCH/"+dstr+"--"+d1str, cookies=resp1.cookies)
+    resp = requests.get('https://www.space-track.org/basicspacedata/query/class/tle_latest/ORDINAL/1/NORAD_CAT_ID/'
+                        +satID+"/predicates/TLE_LINE0,TLE_LINE1,TLE_LINE2", cookies=resp1.cookies)
     if(resp.status_code != 200):
         print("Response went wrong")
         return str(resp.status_code)
-    print(resp.text)
-    return 'success'
+    getPasses(resp.json())
+
+def getPasses(TLE):
+    print(TLE[0]['TLE_LINE0'])
+    print(TLE[0]['TLE_LINE1'])
+    print(TLE[0]['TLE_LINE2'])
 
 def main():
  
@@ -45,7 +49,7 @@ def main():
 
     arguments = parser.parse_args()
 
-    print(getTLE(arguments.satID));
+    getTLE(arguments.satID);
     print("Latitude: " + getLatitude(arguments.zipcode))
     print("Longitude: " + getLongitude(arguments.zipcode))
 
