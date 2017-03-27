@@ -24,6 +24,14 @@ def playSound():
                 continue
         return
 
+def checkTime(time):
+	now = datetime.now()
+	if((now - time) <= timedelta(minutes = 15)):
+		return True
+	else:
+		return False
+
+
 geolocator = Nominatim()
 loginData = { 'identity' : 'ayarrab3@gmail.com',
               'password' : 'team17NETWORKAPPS' }
